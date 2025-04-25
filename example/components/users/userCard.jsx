@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
 import {
   compareName,
   getInitialNameSurname,
@@ -8,6 +8,7 @@ import {themeColors} from '../../themes/themeColors';
 import {ArrowRight2} from 'iconsax-react-nativejs';
 import {useNavigation} from '@react-navigation/native';
 import {USERDETAİL} from '../../utils/routes';
+import userCardStyles from '../../styles/userCardStyles';
 
 // create a component
 const UserCard = ({user}) => {
@@ -15,60 +16,29 @@ const UserCard = ({user}) => {
   return (
     <Pressable
       onPress={() => navigation.navigate(USERDETAİL, {user})}
-      style={styles.container}>
+      style={userCardStyles.container}>
       <View>
         <View
-          style={{
-            width: 70,
-            height: 70,
-            borderWidth: 1,
-            borderRadius: 70,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: getRandomColor(),
-          }}>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+          style={[
+            userCardStyles.avatarContainer,
+            {backgroundColor: getRandomColor()},
+          ]}>
+          <Text style={userCardStyles.avatarText}>
             {getInitialNameSurname(user.name, user.surname)}
           </Text>
         </View>
       </View>
-      <View style={{padding: 10, flex: 1}}>
-        <Text
-          style={{
-            fontSize: 18,
-            fontWeight: '500',
-          }}>
+      <View style={userCardStyles.userInfo}>
+        <Text style={userCardStyles.userName}>
           {compareName(user.name, user.surname)}
         </Text>
-        <Text
-          style={{
-            fontSize: 18,
-            fontWeight: '500',
-          }}>
-          {user.email}
-        </Text>
+        <Text style={userCardStyles.userEmail}>{user.email}</Text>
       </View>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <ArrowRight2 color={themeColors.BLACK} size={30} variant="" />
+      <View style={userCardStyles.iconContainer}>
+        <ArrowRight2 color={themeColors.BLACK} size={30} />
       </View>
     </Pressable>
   );
 };
 
-// define your styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: themeColors.WHITE,
-    padding: 10,
-    marginTop: 4,
-  },
-});
-
-//make this component available to the app
 export default UserCard;
