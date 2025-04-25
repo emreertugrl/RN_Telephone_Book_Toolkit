@@ -14,8 +14,8 @@ import Button from '../../components/ui/button';
 import {useDispatch} from 'react-redux';
 import {deleteUser} from '../../store/slice/userSlice';
 import {ADDNEWUSER} from '../../utils/routes';
+import userDetailStyles from '../../styles/userDetailStyles';
 
-// create a component
 const UserDetail = ({navigation}) => {
   const route = useRoute();
   const {user} = route.params;
@@ -24,34 +24,18 @@ const UserDetail = ({navigation}) => {
   return (
     <View style={defaultScreenStyle.container}>
       <ScrollView>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: 200,
-            borderBottomWidth: 0.5,
-            borderColor: themeColors.GRAY,
-          }}>
+        <View style={userDetailStyles.headerContainer}>
           <View
-            style={{
-              width: 100,
-              height: 100,
-              borderWidth: 1,
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: getRandomColor(),
-            }}>
-            <Text style={{fontSize: 40, fontWeight: 'bold'}}>
+            style={[
+              userDetailStyles.avatarContainer,
+              {backgroundColor: getRandomColor()},
+            ]}>
+            <Text style={userDetailStyles.avatarText}>
               {getInitialNameSurname(user.name, user.surname)}
             </Text>
           </View>
-          <View style={{padding: 10, flex: 1}}>
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: '500',
-              }}>
+          <View style={userDetailStyles.nameContainer}>
+            <Text style={userDetailStyles.nameText}>
               {compareName(user.name, user.surname)}
             </Text>
           </View>
@@ -66,7 +50,7 @@ const UserDetail = ({navigation}) => {
           />
           <InfoRow icon={Calendar} text={user.age.toString()} />
         </View>
-        <View style={{marginTop: 50}}>
+        <View style={userDetailStyles.buttonContainer}>
           <Button
             onPress={() => {
               dispatch(deleteUser(user.id));
