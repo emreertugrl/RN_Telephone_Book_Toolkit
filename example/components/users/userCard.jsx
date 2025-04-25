@@ -6,11 +6,16 @@ import {
 } from '../../utils/functions';
 import {themeColors} from '../../themes/themeColors';
 import {ArrowRight2} from 'iconsax-react-nativejs';
+import {useNavigation} from '@react-navigation/native';
+import {USERDETAİL} from '../../utils/routes';
 
 // create a component
 const UserCard = ({user}) => {
+  const navigation = useNavigation();
   return (
-    <Pressable style={styles.container}>
+    <Pressable
+      onPress={() => navigation.navigate(USERDETAİL, {user})}
+      style={styles.container}>
       <View>
         <View
           style={{
