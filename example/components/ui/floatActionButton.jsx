@@ -2,9 +2,9 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import {themeColors} from '../../themes/themeColors';
 import {Add} from 'iconsax-react-nativejs';
 
-const FloatActionButton = () => {
+const FloatActionButton = props => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity {...props} style={styles.container}>
       <Add size={40} color={themeColors.WHITE} />
     </TouchableOpacity>
   );
