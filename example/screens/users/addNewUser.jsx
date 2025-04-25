@@ -5,29 +5,39 @@ import {Formik} from 'formik';
 import defaultScreenStyle from '../../styles/defaultScreenStyle';
 import {newUserSchema} from '../../utils/validationSchemas';
 import {useDispatch} from 'react-redux';
-import {addNewUser} from '../../store/slice/userSlice';
-import {useNavigation} from '@react-navigation/native';
+import {addNewUser, updateUser} from '../../store/slice/userSlice';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {USERS} from '../../utils/routes';
 
 const AddNewUser = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const route = useRoute();
+  const {user} = route.params || {};
+
   return (
     <View style={defaultScreenStyle.container}>
       <Formik
         initialValues={{
-          id: new Date().getTime(),
-          name: '',
-          surname: '',
-          phoneNumber: '+90 555 123 45 67',
-          email: 'test@example.com',
-          gender: 'male',
-          age: '30',
+          id: user?.id || new Date().getTime(),
+          name: user?.name || '',
+          surname: user?.surname || '',
+          phoneNumber: user?.phoneNumber || '+90 555 123 45 67',
+          email: user?.email || 'test@example.com',
+          gender: user?.gender || 'male',
+          age: user?.age || '30',
         }}
         validationSchema={newUserSchema}
         onSubmit={values => {
-          dispatch(addNewUser(values));
-          Alert.alert('', 'Kullanıcı kaydoldu');
-          navigation.goBack();
+          {
+            user ? dispatch(updateUser(values)) : dispatch(addNewUser(values));
+          }
+          Alert.alert(
+            '',
+            user ? 'Kullanıcı güncellendi' : 'Kullanıcı kaydedildi',
+          );
+
+          navigation.navigate(USERS);
         }}>
         {({handleChange, handleBlur, handleSubmit, values, errors}) => (
           <ScrollView>
@@ -82,7 +92,11 @@ const AddNewUser = () => {
               placeholder="Please set age"
               keyboardType="number-pad"
             />
-            <Button onPress={handleSubmit} title="Save" status="success" />
+            <Button
+              onPress={handleSubmit}
+              title={user ? 'Update' : 'Save'}
+              status={user ? '' : 'success'}
+            />
           </ScrollView>
         )}
       </Formik>

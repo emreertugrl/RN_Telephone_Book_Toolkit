@@ -17,7 +17,10 @@ const userSlice = createSlice({
       state.users = filteredUsers;
     },
     updateUser: (state, action) => {
-      state.users = [...state.users, action.payload];
+      const updatedUsers = state.users.map(item =>
+        item.id === action.payload.id ? action.payload : item,
+      );
+      state.users = updatedUsers;
     },
   },
 });
