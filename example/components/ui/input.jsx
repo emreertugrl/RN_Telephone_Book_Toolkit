@@ -2,11 +2,14 @@ import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {themeColors} from '../../themes/themeColors';
 
 const Input = props => {
-  const {title} = props;
+  const {title, error} = props;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <TextInput {...props} style={styles.input} />
+      {error && (
+        <Text style={{marginTop: 5, color: themeColors.RED}}>{error}</Text>
+      )}
     </View>
   );
 };

@@ -6,6 +6,7 @@ const themeColors = {
   YELLOW: '#FF8A65',
   BLUE: '#2CCCE4',
   INPUT: '#D9E3F0',
+  RED: 'red',
 };
 
 export {themeColors};
