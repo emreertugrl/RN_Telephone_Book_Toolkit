@@ -1,5 +1,3 @@
-// userCardStyles.js
-
 import {StyleSheet} from 'react-native';
 import {themeColors} from '../themes/themeColors';
 
