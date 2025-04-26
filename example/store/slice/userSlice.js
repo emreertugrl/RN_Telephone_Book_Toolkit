@@ -1,7 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {getUsers} from '../actions/userActions';
 
 const initialState = {
   users: [],
+  // sunucuya istek atılacağı için yüklenme ve error durumları için
+  pending: false,
+  error: null,
 };
 const userSlice = createSlice({
   name: 'Users',
@@ -22,6 +26,23 @@ const userSlice = createSlice({
       );
       state.users = updatedUsers;
     },
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(getUsers.pending, state => {
+        state.pending = true;
+        state.error = null;
+      })
+      .addCase(getUsers.fulfilled, (state, action) => {
+        console.log(action);
+        state.users = action.payload;
+        state.pending = false;
+        state.error = null;
+      })
+      .addCase(getUsers.rejected, (state, action) => {
+        state.error = action.error;
+        state.pending = false;
+      });
   },
 });
 

@@ -1,5 +1,5 @@
 //import liraries
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, Image} from 'react-native';
 import defaultScreenStyle from '../../styles/defaultScreenStyle';
 import {useRoute} from '@react-navigation/native';
 import {
@@ -7,7 +7,6 @@ import {
   getInitialNameSurname,
   getRandomColor,
 } from '../../utils/functions';
-import {themeColors} from '../../themes/themeColors';
 import {Calendar, Call, Man, Sms, Woman} from 'iconsax-react-nativejs';
 import InfoRow from '../../components/users/infoRow';
 import Button from '../../components/ui/button';
@@ -24,36 +23,62 @@ const UserDetail = ({navigation}) => {
   return (
     <View style={defaultScreenStyle.container}>
       <ScrollView>
-        <View style={userDetailStyles.headerContainer}>
-          <View
-            style={[
-              userDetailStyles.avatarContainer,
-              {backgroundColor: getRandomColor()},
-            ]}>
-            <Text style={userDetailStyles.avatarText}>
-              {getInitialNameSurname(user.name, user.surname)}
-            </Text>
+        {user?.picture.medium ? (
+          <Image
+            source={{uri: user.picture.medium}}
+            style={{
+              width: 70,
+              height: 70,
+              borderRadius: 70,
+              resizeMode: 'contain',
+            }}
+          />
+        ) : (
+          <View style={userDetailStyles.headerContainer}>
+            <View
+              style={[
+                userDetailStyles.avatarContainer,
+                {backgroundColor: getRandomColor()},
+              ]}>
+              <Text style={userDetailStyles.avatarText}>
+                {getInitialNameSurname(
+                  user?.name?.first,
+                  user?.surname || user?.name?.last,
+                )}
+              </Text>
+            </View>
+            <View style={userDetailStyles.nameContainer}>
+              <Text style={userDetailStyles.nameText}>
+                {compareName(
+                  user?.name?.first,
+                  user?.surname || user?.name?.last,
+                )}
+              </Text>
+            </View>
           </View>
-          <View style={userDetailStyles.nameContainer}>
-            <Text style={userDetailStyles.nameText}>
-              {compareName(user.name, user.surname)}
-            </Text>
-          </View>
-        </View>
+        )}
+
         <View>
           <InfoRow icon={Sms} text={user.email} marginVertical={10} />
-          <InfoRow icon={Call} text={user.phoneNumber} />
+          <InfoRow icon={Call} text={user?.phoneNumber || user?.phone} />
           <InfoRow
-            icon={user.gender === 'male' ? Man : Woman}
-            text={user.gender}
+            icon={user?.gender === 'male' ? Man : Woman}
+            text={user?.gender}
             marginVertical={20}
           />
-          <InfoRow icon={Calendar} text={user.age.toString()} />
+          <InfoRow
+            icon={Calendar}
+            text={
+              user?.age?.toString() || user?.registered?.age < 18
+                ? 25
+                : user.registered.age
+            }
+          />
         </View>
         <View style={userDetailStyles.buttonContainer}>
           <Button
             onPress={() => {
-              dispatch(deleteUser(user.id));
+              dispatch(deleteUser(user?.id));
               navigation.goBack();
             }}
             title="Delete User"

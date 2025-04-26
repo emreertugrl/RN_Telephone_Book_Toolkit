@@ -9,6 +9,7 @@ import {ADDNEWUSER} from '../../utils/routes';
 export default UsersScreen = () => {
   const navigation = useNavigation();
   const {users} = useSelector(state => state.users);
+
   return (
     <View style={defaultScreenStyle.container}>
       <FlatList
